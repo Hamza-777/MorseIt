@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    position: relative;
+}
+
 .flex {
     display: flex;
     align-items: center;
@@ -31,6 +35,19 @@
     flex-direction: column;
 }
 
+#footer {
+    max-width: 1800px;
+    margin: 20px auto;
+    flex-direction: column;
+    height: 70px;
+}
+
+#links {
+    margin: 5px 0;
+    width: 100%;
+    justify-content: space-between;
+}
+
 h1 {
     padding: 0 10px;
 }
@@ -48,6 +65,10 @@ a {
     color: #333;
 }
 
+p {
+    margin: 5px 0;
+}
+
 button {
     margin: 10px 0;
     border-radius: 50%;
@@ -61,4 +82,10 @@ button {
 textarea {
     padding: 10px;
     font-size: 16px;
+}
+
+#clear {
+    position: fixed;
+    right: 0px;
+    bottom: 50%;
 }
