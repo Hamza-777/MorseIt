@@ -76,16 +76,12 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
-}
-
-i {
-    color: #333;
+    border-bottom: 2px solid white;
 }
 
 #github,
 #go {
-    font-size: 25px;
+    font-size: 35px;
     color: white;
 }
 
@@ -120,10 +116,12 @@ textarea {
     height: 250px;
     width: 800px;
     margin: 10px 0 0 0;
+    border: 1px solid #ddd;
 }
 
 textarea:focus {
     outline: none;
+    border-left: 3px solid #1597bb;
 }
 
 #clear {
