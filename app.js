@@ -54,8 +54,11 @@ const letters = {
     '?': '..--..',
     '/': '-..-.',
     ' ': '/',
-    '\n': '.-.-',
-  }
+    '\n': '.-.-'
+};
+
+const codePattern = /[\d\w\*\+\?_,"'!=;:\(\)@$&~`#%^<>\{\}|\[\]\\]/;
+const textPattern = /[\*~`#%^<>\{\}|\[\]\\]/;
 
 const text = document.querySelector("#language");
 const code = document.querySelector("#code");
@@ -117,15 +120,22 @@ translate.addEventListener('click', (e) => {
             code.value = '';
         } else {
             let textVal = text.value.toLowerCase();
-            code.value = toCode(textVal);
-            console.log(text.value);
+            if(textPattern.test(textVal)) {
+                text.value = "'*', '~', '`', '#', '%', '^', '<', '>', '{', '}', '|', '[', ']' and '\\' cannot be converted to morse code"
+            } else {
+                code.value = toCode(textVal);
+            }
         }
     } else {
         if(code.value.length === 0) {
             text.value = '';
         } else {
             let codeVal = code.value;
-            text.value = toText(codeVal);
+            if(codePattern.test(codeVal)) {
+                code.value = "'-', '.' and '/' are the only allowed characters";
+            } else {
+                text.value = toText(codeVal);
+            }
         }
     }
 
@@ -153,3 +163,16 @@ const toText = code => {
 
     return result;
 }
+
+// function storeInLocalStorage(task) {
+// 	let tasks;
+// 	if(localStorage.getItem('tasks') === null) {
+// 		tasks = [];
+// 	} else {
+// 		tasks = JSON.parse(localStorage.getItem('tasks'));
+// 	}
+
+// 	tasks.push(task);
+
+// 	localStorage.setItem('tasks', JSON.stringify(tasks));
+// }
