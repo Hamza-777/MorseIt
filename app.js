@@ -66,15 +66,28 @@ const clear = document.querySelector("#clear");
 const translate = document.querySelector("#translate");
 const go = document.querySelector("#go");
 
-text.addEventListener('focus', (e) => {
+
+text.addEventListener('focus', textFocus);
+
+text.addEventListener('blur', textBlur);
+
+code.addEventListener('focus', codeFocus);
+
+code.addEventListener('blur', codeBlur);
+
+clear.addEventListener('click', clearFields);
+
+translate.addEventListener('click', doTranslation);
+
+function textFocus(e) {
     text.disabled = false;
     code.disabled = true;
     go.classList = "fas fa-chevron-down";
 
     e.preventDefault();
-});
+}
 
-text.addEventListener('blur', (e) => {
+function textBlur(e) {
     if(text.value.length !== 0) {
         code.disabled = true;
         go.classList = "fas fa-chevron-down";
@@ -83,17 +96,17 @@ text.addEventListener('blur', (e) => {
     }
 
     e.preventDefault();
-});
+}
 
-code.addEventListener('focus', (e) => {
+function codeFocus(e) {
     code.disabled = false;
     text.disabled = true;
     go.classList = "fas fa-chevron-up";
 
     e.preventDefault();
-});
+}
 
-code.addEventListener('blur', (e) => {
+function codeBlur(e) {
     if(code.value.length !== 0) {
         text.disabled = true;
         go.classList = "fas fa-chevron-up";
@@ -102,9 +115,9 @@ code.addEventListener('blur', (e) => {
     }
 
     e.preventDefault();
-});
+}
 
-clear.addEventListener('click', (e) => {
+function clearFields(e) {
     text.value = '';
     code.value = '';
     text.disabled = false;
@@ -112,18 +125,19 @@ clear.addEventListener('click', (e) => {
     go.classList = "fas fa-chevron-down";
 
     e.preventDefault();
-});
+}
 
-translate.addEventListener('click', (e) => {
+function doTranslation(e) {
     if(go.classList == "fas fa-chevron-down") {
         if(text.value.length === 0) {
             code.value = '';
         } else {
             let textVal = text.value.toLowerCase();
             if(textPattern.test(textVal)) {
-                text.value = "'*', '~', '`', '#', '%', '^', '<', '>', '{', '}', '|', '[', ']' and '\\' cannot be converted to morse code"
+                text.value = "'*', '~', '`', '#', '%', '^', '<', '>', '{', '}', '|', '[', ']' and '\\' cannot be converted to morse code";
             } else {
                 code.value = toCode(textVal);
+                storeInLocalStorage(text.value, code.value);
             }
         }
     } else {
@@ -135,12 +149,13 @@ translate.addEventListener('click', (e) => {
                 code.value = "'-', '.' and '/' are the only allowed characters";
             } else {
                 text.value = toText(codeVal);
+                storeInLocalStorage(text.value, code.value);
             }
         }
     }
 
     e.preventDefault();
-});
+}
 
 const toCode = text => {
     let result = letters[text[0]];
@@ -164,15 +179,26 @@ const toText = code => {
     return result;
 }
 
-// function storeInLocalStorage(task) {
-// 	let tasks;
-// 	if(localStorage.getItem('tasks') === null) {
-// 		tasks = [];
-// 	} else {
-// 		tasks = JSON.parse(localStorage.getItem('tasks'));
-// 	}
+const storeInLocalStorage = (text, code) => {
+	let history;
+	if(localStorage.getItem('history') === null) {
+		history = [];
+	} else {
+		history = JSON.parse(localStorage.getItem('history'));
+	}
 
-// 	tasks.push(task);
+	history.push([text, code]);
 
-// 	localStorage.setItem('tasks', JSON.stringify(tasks));
-// }
+	localStorage.setItem('history', JSON.stringify(history));
+}
+
+const getFromLocalStorage = () => {
+	let history;
+	if(localStorage.getItem('history') === null) {
+		history = [];
+	} else {
+		history = JSON.parse(localStorage.getItem('history'));
+	}
+
+	return history;
+}
